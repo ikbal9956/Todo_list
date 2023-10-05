@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+      
+    <title>from with discription</title>
+  </head>
+  <body>
+    <!-- <h1>Hello, world and ikbal ahmad!</h1> -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">its ur choise</a>
+              <!-- <div class="dropdown-divider"></div> -->
+              <a class="dropdown-item" href="#">Band kr de bhai,tere kaam ka nhi hai</a>
+            </div>
+          </li>
+          
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+       <div class="container">
+           <h1 class="text-center"> THIS IS MY TODOs LIST</h1>
+       
+      
+     
+        <div class="form-group">
+          <label for="title"><h2>Title</h2></label>
+          <input type="email" class="form-control" id="title" aria-describedby="emailHelp">
+          <p> write your title</p>
+          
+        </div>
+        <div class="form-group">
+          <label for="discription"><h2>Description</h2></label>
+          <textarea class="form-control" id="discription" rows="3"></textarea>
+          <p> AnyThing More to Write</p>
+        </div>
+        
+        <button type="submit" id="add" class="btn btn-primary">Touch Me to Save it</button>
+        <div id="items" >
+        <h3 >Your items</h3>
+        </div>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Sl.no.</th>
+            <th scope="col">Your title</th>
+            <th scope="col">Your Description</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="tabulation">
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>  
+            <td><button class="btn btn-primary"></button>>Delete</button></td>         
+          </tr>
+          
+        </tbody>
+      </table>
+      </div>
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+    <script>
+      //pushing the value inside the localstorage
+      function  getandupdate(){
+        console.log("updating list");
+           tit=document.getElementById('title').value;
+           dis=document.getElementById('discription').value;
+        if(localStorage.getItem('itemsJson')==null){
+            jsonarray=[];
+            jsonarray.push([tit,dis]);
+            localStorage.setItem('itemsJson',JSON.stringify(jsonarray));
+        }
+        else{
+          str=localStorage.getItem('itemsJson');
+          jsonarray=JSON.parse(str);
+          jsonarray.push([tit,dis]);
+          localStorage.setItem('itemsJson',JSON.stringify(jsonarray));
+        }
+        update();
+      }  
+
+
+      function update(){
+        if(localStorage.getItem('itemsJson')==null){
+            jsonarray=[];
+            
+        }
+        else{
+          str=localStorage.getItem('itemsJson');
+          jsonarray=JSON.parse(str);
+          
+        }
+        
+        let tbl=document.getElementById('tabulation');
+        let string="";
+        jsonarray.forEach((element,index) =>{
+          string +=`
+          <tr>
+            <th scope="row">${index+1}</th>
+            <td>${element[0]}</td>
+            <td>${element[1]}</td>  
+            <td><button class="btn btn-primary" onclick="deleted(${index})">Delete</button></td>         
+          </tr>
+          `
+        });
+       tbl.innerHTML=string;
+
+    
+      }      
+      click=document.getElementById("add");
+      click.addEventListener("click",getandupdate);
+      update();
+      
+
+      //deletion of array
+      function deleted(itemind){
+        console.log("Delete",itemind);
+          str=localStorage.getItem('itemsJson');
+          jsonarray=JSON.parse(str);
+
+          jsonarray.splice(itemind,1);
+          localStorage.setItem('itemsJson',JSON.stringify(jsonarray));
+          update();
+      }
+
+    </script>
+  </body>
+</html>   
